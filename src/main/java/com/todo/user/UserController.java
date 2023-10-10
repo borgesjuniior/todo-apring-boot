@@ -1,16 +1,26 @@
 package com.todo.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.transaction.Transactional;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
+  /*
+   * Injeção de dependências
+   */
+  @Autowired
+  private IUserRepository userRepository;
+
   @PostMapping
-  public void create(@RequestBody User user) {
-    System.out.println(user.getName());
+  public User create(@RequestBody User user) {
+    var userCreated = userRepository.save(user);
+    return userCreated;
   }
 }
